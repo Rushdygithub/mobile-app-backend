@@ -1,13 +1,16 @@
 const user = require('../model/user')
 const route = require('../routes/route')
+const bcypt = require('bcrypt')
 
-const userRegister =  (req,res) => {
+const userRegister = async (req,res) => {
     try {
-
+        
+        let salt = 10
+        const hashPassword = await bcypt.hash(req.body.password, salt)
         const newUser = new user({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password,
+            password: hashPassword,
             profilePicture: req.body.profilePicture,
             coverPicture: req.body.profilePicture,
             isAdmin: req.body.isAdmin,
@@ -31,6 +34,18 @@ const userRegister =  (req,res) => {
     }
 }
 
+const userLogin = async () => {
+    try {
+
+    } catch (error) { 
+        return res.status(500).json({
+            status: false,
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
-    userRegister
+    userRegister,
+    userLogin
 }
