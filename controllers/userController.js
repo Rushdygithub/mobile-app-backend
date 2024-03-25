@@ -34,8 +34,34 @@ const userRegister = async (req,res) => {
     }
 }
 
-const userLogin = async () => {
+const userLogin = async (req,res) => {
     try {
+        const {email,password} = req.body;
+        const findUser = await user.findOne({email});
+        if (!findUser)
+        {
+            return res.status(401).json({
+                status: false,
+                error: 'User does not exsist'
+            });
+        }
+        
+        const check = await user.find({email})
+        const passDB = check[0].password
+
+        const passCheck = await bcypt.compare(password, passDB);
+        if (!passCheck)
+        {
+            return res.status(401).json({
+                status: false,
+                error: 'Password does not match'
+            });
+        }
+ 
+       res.status(200).json({
+            status: true,
+            message: 'User logged succesfully'
+       });
 
     } catch (error) { 
         return res.status(500).json({

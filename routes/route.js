@@ -21,12 +21,12 @@ router.get('/test', (req,res)=> {
 
 //New user registration
 router.post('/user/register', async (req,res)=> {
-    await userLogin(req,res)
+    await userRegister(req,res)
 })
 
 //New user registration
 router.post('/user/login', async (req,res)=> {
-    await userRegister(req,res)
+    await userLogin(req,res)
 })
 
 
