@@ -71,7 +71,31 @@ const userLogin = async (req,res) => {
     }
 }
 
+const userUpdate = async (req,res,id) => {
+    try {
+        const salt = 10;
+        const hashPassword = await bcypt.hash(req.body.password, salt);
+        const up = {username:req.body.username, password: hashPassword}
+
+        const update = await user.updateOne({_id:id},up);
+        if (update) 
+        {
+            res.status(200).json({
+                status: true,
+                message: `${id} is updated succesfully`
+            });
+        }
+        
+    } catch (error)
+    {
+        return res.status(500).json({
+            status: false,
+            error: error.message
+        });
+    }
+}
 module.exports = {
     userRegister,
-    userLogin
+    userLogin,
+    userUpdate
 }
