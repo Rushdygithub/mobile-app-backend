@@ -94,8 +94,38 @@ const userUpdate = async (req,res,id) => {
         });
     }
 }
+
+const deleteUser = async (req,res,id) => {
+    try {
+        const findUser = await user.findOne({_id:id});
+        if(!findUser)
+        {
+            return res.status(401).json({
+                status: false,
+                error: 'User does not exsist'
+            });
+        }
+        const userDel = await user.deleteOne({_id:id});
+        if(userDel)
+        {
+            res.status(200).json({
+                status: true,
+                message: `${id} is deleted succesfully`
+            });
+        }
+       
+    } catch (error)
+    { 
+        return res.status(500).json({
+        status: false,
+        error: error.message
+        });
+    }
+}
+
 module.exports = {
     userRegister,
     userLogin,
-    userUpdate
+    userUpdate,
+    deleteUser
 }
