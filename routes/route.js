@@ -3,7 +3,7 @@ const {connection} = require('../server.js');
 const express =  require('express');
 const app = express();
 const router = express.Router();
-const {userRegister,userLogin,userUpdate,deleteUser} = require('../controllers/userController.js');
+const {userRegister,userLogin,userUpdate,deleteUser,getUserById,getAllUsers} = require('../controllers/userController.js');
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -39,6 +39,17 @@ router.post('/update/user/:id', async (req,res)=> {
 router.delete('/delete/user/:id', async (req,res)=> {
     const id = req.params.id;
     await deleteUser(req,res,id);
+});
+
+//Get user by id
+router.get('/get/users/:id', async (req,res)=> {
+    const id = req.params.id;
+    await getUserById(req,res,id);
+});
+
+//Get all users
+router.get('/search/all-users', async (req,res)=> {
+    await getAllUsers(req,res);
 });
 
 const server = () => {

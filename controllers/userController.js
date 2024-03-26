@@ -123,9 +123,53 @@ const deleteUser = async (req,res,id) => {
     }
 }
 
+const getUserById = async (req,res,id) => {
+      try {
+            const data = await user.findById(id);
+            if (!user)
+            {
+                res.status(404).json({
+                    status: false,
+                    error: 'User does not exsist'
+                });
+            }
+
+                res.status(200).json({
+                    status: true,
+                    data: data
+                });
+
+      } catch (error)
+      {
+        return res.status(500).json({
+            status: false,
+            error: error.message
+        });
+      }
+}
+
+const getAllUsers = async (req,res)=> {
+    try { 
+        const getAllUsers = await user.find();
+        return res.status(200).json({
+            status: true,
+            data: getAllUsers
+        });
+
+    } catch (error)
+    {
+        return res.status(500).json({
+            status: false,
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     userRegister,
     userLogin,
     userUpdate,
-    deleteUser
+    deleteUser,
+    getUserById,
+    getAllUsers
 }
