@@ -58,6 +58,7 @@ const server = () => {
         console.log(`Server is runing on 5000`);
     });
 }
+
 server();
 connection();
 

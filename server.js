@@ -17,6 +17,14 @@ const connection = async () => {
     })
 } 
 
+const server = () => {
+    app.listen(5000, (error)=> {
+        if (error) { console.log(error.message) }
+        console.log(`Server is runing on 5000`);
+    });
+}
+
 module.exports = {
-    connection
+    connection,
+    server
 }
