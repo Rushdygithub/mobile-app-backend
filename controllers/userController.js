@@ -77,6 +77,13 @@ const userUpdate = async (req,res,id) => {
         const hashPassword = await bcypt.hash(req.body.password, salt);
         const up = {username:req.body.username, password: hashPassword}
 
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: false,
+                message: 'Invalid ID format',
+            });
+        }
+
         const update = await user.updateOne({_id:id},up);
         if (update) 
         {
@@ -97,14 +104,13 @@ const userUpdate = async (req,res,id) => {
 
 const deleteUser = async (req,res,id) => {
     try {
-        const findUser = await user.findOne({_id:id});
-        if(!findUser)
-        {
-            return res.status(401).json({
+        if (id.length !== 24) {
+            return res.status(400).json({
                 status: false,
-                error: 'User does not exsist'
+                message: 'Invalid ID format',
             });
         }
+
         const userDel = await user.deleteOne({_id:id});
         if(userDel)
         {
@@ -125,15 +131,14 @@ const deleteUser = async (req,res,id) => {
 
 const getUserById = async (req,res,id) => {
       try {
-            const data = await user.findById(id);
-            if (!user)
-            {
-                res.status(404).json({
+            if (id.length !== 24) {
+                return res.status(400).json({
                     status: false,
-                    error: 'User does not exsist'
+                    message: 'Invalid ID format',
                 });
             }
-
+            const data = await user.findById(id);
+            
                 res.status(200).json({
                     status: true,
                     data: data
